@@ -29,6 +29,12 @@ COPY --chown=www-data:www-data . /var/www/html
 
 # Re-run install, but now with scripts and optimizing the autoloader (should be faster)...
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+RUN php artisan key:generate
+RUN php artisan horizon:install
+#RUN php artisan telescope:install
+RUN php artisan storage:link
+RUN php artisan horizon
+RUN php artisan db:seed
 
 # Precompiling assets for production
 RUN yarn install --immutable && \
